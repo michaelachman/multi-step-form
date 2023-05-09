@@ -5,9 +5,10 @@ import { Toggle } from "./Toggle";
 
 export type SelectYourPlanProps = {
   isMonthly: boolean;
-  changeState: () => void;
-  onChange: (index: number) => void;
+  changePlanTime: () => void;
+  selectOption: (index: number) => void;
   planParams: PlanParams[];
+  planIndex: number;
 };
 
 export const SelectYourPlan = (props: SelectYourPlanProps) => {
@@ -26,11 +27,15 @@ export const SelectYourPlan = (props: SelectYourPlanProps) => {
           <TabSelect
             planParams={props.planParams}
             name="Params"
-            state={props.isMonthly}
-            onChange={props.onChange}
+            isMonthly={props.isMonthly}
+            selectOption={(index) => props.selectOption(index)}
+            planIndex={props.planIndex}
           />
         </form>
-        <Toggle planState={props.isMonthly} changeState={props.changeState} />
+        <Toggle
+          planState={props.isMonthly}
+          changePlanTime={props.changePlanTime}
+        />
       </div>
     </div>
   );

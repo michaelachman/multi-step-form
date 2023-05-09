@@ -8,25 +8,24 @@ export type FinishingUpProps = {
   addonsParams: AddonParams[];
   changeActiveStep: () => void;
   selectedAddonsIndex: number[];
+  totalPrice: number;
 };
 
 export const FinishingUp = (props: FinishingUpProps) => {
   const monthlyPlan = `$${props.planParams[props.planIndex].monthlyCost}/mo`;
   const yearlyPlan = `$${props.planParams[props.planIndex].yearlyCost}/yr`;
 
-  let totalAddonsPrice = props.isMonthly
-    ? props.planParams[props.planIndex].monthlyCost
-    : props.planParams[props.planIndex].yearlyCost;
+  // let totalPrice = props.isMonthly
+  //   ? props.planParams[props.planIndex].monthlyCost
+  //   : props.planParams[props.planIndex].yearlyCost;
 
-  props.isMonthly
-    ? props.selectedAddonsIndex.forEach((index) => {
-        totalAddonsPrice =
-          totalAddonsPrice + props.addonsParams[index].monthlyCost;
-      })
-    : props.selectedAddonsIndex.forEach((index) => {
-        totalAddonsPrice =
-          totalAddonsPrice + props.addonsParams[index].yearlyCost;
-      });
+  // props.isMonthly
+  //   ? props.selectedAddonsIndex.forEach((index) => {
+  //       totalPrice = totalPrice + props.addonsParams[index].monthlyCost;
+  //     })
+  //   : props.selectedAddonsIndex.forEach((index) => {
+  //       totalPrice = totalPrice + props.addonsParams[index].yearlyCost;
+  //     });
 
   return (
     <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
@@ -88,8 +87,8 @@ export const FinishingUp = (props: FinishingUpProps) => {
 
         <p className="text-right font-bold text-[#022959]">
           {props.isMonthly
-            ? `+$${totalAddonsPrice}/mo`
-            : `+$${totalAddonsPrice}/yr`}
+            ? `+$${props.totalPrice}/mo`
+            : `+$${props.totalPrice}/yr`}
         </p>
       </div>
     </div>

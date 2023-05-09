@@ -8,9 +8,9 @@ export type PlanParams = {
 
 export type TabToSelectProps = {
   option: PlanParams;
-  onClick: () => void;
+  selectOption: () => void;
   isSelected: boolean;
-  state: boolean;
+  isMonthly: boolean;
 };
 
 export const TabToSelect = (props: TabToSelectProps) => {
@@ -19,7 +19,7 @@ export const TabToSelect = (props: TabToSelectProps) => {
 
   return (
     <div
-      onClick={props.onClick}
+      onClick={props.selectOption}
       className={`${
         props.isSelected ? "border-[#483EFF] bg-[#F8F9FF]" : "bg-transparent"
       } flex border py-4 pl-4 mt-2 rounded-lg`}
@@ -30,10 +30,10 @@ export const TabToSelect = (props: TabToSelectProps) => {
           {props.option.title}
         </p>
         <p className="text-gray-500 text-sm">
-          {props.state === true ? monthly : yearly}
+          {props.isMonthly === true ? monthly : yearly}
         </p>
         <p className="text-[#022959] text-sm">
-          {props.state === false && props.option.yearlyText}
+          {props.isMonthly === false && props.option.yearlyText}
         </p>
       </div>
     </div>

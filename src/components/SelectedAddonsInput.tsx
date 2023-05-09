@@ -6,16 +6,17 @@ export type SelectedAddonsInputProps = {
   isMonthly: boolean;
   toggleAddons: (index: number) => void;
   selectedAddonsIndex: number[];
+  isSelected: (index: number) => boolean;
 };
 
 export const SelectedAddonsInput = (props: SelectedAddonsInputProps) => {
-  function isSelected(index: number) {
-    if (props.selectedAddonsIndex.includes(index)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // function isSelected(index: number) {
+  //   if (props.selectedAddonsIndex.includes(index)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   return (
     <>
@@ -23,7 +24,7 @@ export const SelectedAddonsInput = (props: SelectedAddonsInputProps) => {
         <Addon
           addonsParams={param}
           toggleAddons={() => props.toggleAddons(index)}
-          isSelected={isSelected(index)}
+          isSelected={props.isSelected(index)}
           isMonthly={props.isMonthly}
         />
       ))}

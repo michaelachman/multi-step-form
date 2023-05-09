@@ -4,37 +4,26 @@ import { PlanParams, TabToSelect, TabToSelectProps } from "./TabToSelect";
 export type TabSelectProps = {
   planParams: PlanParams[];
   name: string;
-  state: boolean;
-  onChange: (index: number) => void;
+  isMonthly: boolean;
+  selectOption: (index: number) => void;
+  planIndex: number;
 };
 
-export const TabSelect = ({
-  planParams,
-  name,
-  state,
-  onChange,
-}: TabSelectProps) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  function selectOption(index: number) {
-    setSelectedIndex(index);
-    onChange(index);
-  }
-
+export const TabSelect = (props: TabSelectProps) => {
   return (
     <>
-      {planParams.map((param, index) => (
+      {props.planParams.map((param, index) => (
         <TabToSelect
           option={param}
-          onClick={() => selectOption(index)}
-          isSelected={selectedIndex === index}
-          state={state}
+          selectOption={() => props.selectOption(index)}
+          isSelected={props.planIndex === index}
+          isMonthly={props.isMonthly}
         />
       ))}
       <input
         type="hidden"
-        name={name}
-        value={planParams[selectedIndex].title}
+        name={props.name}
+        value={props.planParams[props.planIndex].title}
       />
     </>
   );

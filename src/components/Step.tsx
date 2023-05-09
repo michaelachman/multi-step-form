@@ -6,7 +6,7 @@ export type StepProps = {
 
 export const Step = (props: StepProps) => {
   const stepClass = props.active
-    ? "bg-[#BEE2FD] text-black"
+    ? "bg-[#BEE2FD] text-black font-bold"
     : "bg-transparent text-white";
 
   return (

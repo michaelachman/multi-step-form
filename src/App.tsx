@@ -79,6 +79,18 @@ function App() {
     },
   ];
 
+  let totalPrice = isMonthly
+    ? planParams[planIndex].monthlyCost
+    : planParams[planIndex].yearlyCost;
+
+  isMonthly
+    ? selectedAddonsIndex.forEach((index) => {
+        totalPrice = totalPrice + addonsParams[index].monthlyCost;
+      })
+    : selectedAddonsIndex.forEach((index) => {
+        totalPrice = totalPrice + addonsParams[index].yearlyCost;
+      });
+
   function nextStep() {
     setActiveStep((prevValue) => {
       return prevValue + 1;
@@ -98,11 +110,11 @@ function App() {
     });
   }
 
-  function changeState() {
+  function changePlanTime() {
     setYearly((prevV) => !prevV);
   }
 
-  function onChange(index: number) {
+  function selectOption(index: number) {
     setPlanIndex(index);
   }
 
@@ -117,6 +129,14 @@ function App() {
       );
     } else {
       setSelectedAddonsIndex((prevV) => [...prevV, index]);
+    }
+  }
+
+  function isSelected(index: number) {
+    if (selectedAddonsIndex.includes(index)) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -138,8 +158,9 @@ function App() {
         <SelectYourPlan
           planParams={planParams}
           isMonthly={isMonthly}
-          changeState={changeState}
-          onChange={onChange}
+          changePlanTime={changePlanTime}
+          selectOption={(index) => selectOption(index)}
+          planIndex={planIndex}
         />
       )}
       {activeStep === 3 && (
@@ -148,6 +169,7 @@ function App() {
           isMonthly={isMonthly}
           toggleAddons={toggleAddons}
           selectedAddonsIndex={selectedAddonsIndex}
+          isSelected={(index) => isSelected(index)}
         />
       )}
       {activeStep === 4 && !isFinished && (
@@ -158,26 +180,31 @@ function App() {
           addonsParams={addonsParams}
           changeActiveStep={changeActiveStep}
           selectedAddonsIndex={selectedAddonsIndex}
+          totalPrice={totalPrice}
         />
       )}
       {activeStep === 4 && isFinished && <EndPage />}
 
-      <Footer
-        index={activeStep}
-        nextStep={nextStep}
-        goBack={goBack}
-        confirmButton={confirmButton}
-        isFinished={isFinished}
-      />
+      {isFinished ? undefined : (
+        <Footer
+          index={activeStep}
+          nextStep={nextStep}
+          goBack={goBack}
+          confirmButton={confirmButton}
+        />
+      )}
     </div>
   );
 }
 
 export default App;
 
-// NIE WIEM
-// o co chodzi w tym name={name} w tabseleccie
-
 // TASKI
-// 2. zaczac kminic jak wysylac info do serwera
-// 3. nie pozwolic na zmiane activestepa jezeli nie ma wpisanych danych na 1 stronie
+// 3. nie pozwolic na zmiane activestepa jezeli nie ma wpisanych danych na 1 stronie (walidacja)
+// 4. przeleciec po komponentach, nazewnictwo funkcji i propsow (changeState, onChange) /// done
+// 5. wyjebac reszte logiki do apptsxa (tabselect, selectedaddonsinput, chyba finishingup) /// done
+// 6. jeden obiekt ktorzy przetrzymuje cale info o stanie formularza
+// 7. ugenerycznienie komponentow (toggle) (*tabselect)
+
+// .... zaczac kminic jak wysylac info do serwera
+// .... potem dekstop

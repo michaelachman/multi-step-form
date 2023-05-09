@@ -6,6 +6,7 @@ export type PickAddonsProps = {
   addonsParams: AddonParams[];
   toggleAddons: (index: number) => void;
   selectedAddonsIndex: number[];
+  isSelected: (index: number) => boolean;
 };
 
 export const PickAddons = (props: PickAddonsProps) => {
@@ -24,6 +25,7 @@ export const PickAddons = (props: PickAddonsProps) => {
             addonsParams={props.addonsParams}
             toggleAddons={props.toggleAddons}
             selectedAddonsIndex={props.selectedAddonsIndex}
+            isSelected={(index) => props.isSelected(index)}
           />
         </form>
       </div>

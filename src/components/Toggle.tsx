@@ -1,6 +1,6 @@
 export type ToggleProps = {
   planState: boolean;
-  changeState: () => void;
+  changePlanTime: () => void;
 };
 
 export const Toggle = (props: ToggleProps) => {
@@ -18,7 +18,7 @@ export const Toggle = (props: ToggleProps) => {
           className="input"
           type="checkbox"
           defaultChecked={!props.planState}
-          onClick={props.changeState}
+          onClick={props.changePlanTime}
         />
         <span className="span" />
       </label>

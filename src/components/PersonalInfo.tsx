@@ -19,29 +19,33 @@ export const PersonalInfo = () => {
         <div className="options">
           <form>
             <div className="relative mx-6">
-              <label className="text-[#022959] text-sm">Name</label>
+              <label className="text-[#022959] text-sm pl-1">Name</label>
               <input
                 type="text"
                 placeholder="e.g. Stephen King"
-                className="border w-full p-1 rounded-md"
+                className="border w-full p-2 rounded-md"
                 name="name"
               />
             </div>
             <div className="relative mx-6 mt-2">
-              <label className="text-[#022959] text-sm">Email Address</label>
+              <label className="text-[#022959] text-sm pl-1">
+                Email Address
+              </label>
               <input
                 type="email"
                 placeholder="e.g. stephenking@lorem.com"
-                className="border w-full p-1 rounded-md"
+                className="border w-full p-2 rounded-md"
                 name="email"
               />
             </div>
             <div className="relative mx-6 mt-2 pb-8">
-              <label className="text-[#022959] text-sm">Phone number</label>
+              <label className="text-[#022959] text-sm pl-1">
+                Phone number
+              </label>
               <input
                 type="tel"
                 placeholder="e.g. +1 234 567 890"
-                className="border w-full p-1 rounded-md"
+                className="border w-full p-2 rounded-md"
                 name="phoneNumber"
               />
             </div>
