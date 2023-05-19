@@ -1,10 +1,16 @@
-type Info = {
+import { ChangeEvent } from "react";
+
+export type PersonalInfoProps = {
+  handleNameChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  handleEmailChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  handlePhoneNumberChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  submitPersonalInfo: (event: React.SyntheticEvent) => void;
   name: string;
   email: string;
-  phonenumber: number;
+  phoneNumber: string;
 };
 
-export const PersonalInfo = () => {
+export const PersonalInfo = (props: PersonalInfoProps) => {
   return (
     <div>
       <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
@@ -17,7 +23,10 @@ export const PersonalInfo = () => {
           </p>
         </div>
         <div className="options">
-          <form>
+          <form
+            name="personalInfoForm"
+            onSubmit={(event) => props.submitPersonalInfo(event)}
+          >
             <div className="relative mx-6">
               <label className="text-[#022959] text-sm pl-1">Name</label>
               <input
@@ -25,6 +34,8 @@ export const PersonalInfo = () => {
                 placeholder="e.g. Stephen King"
                 className="border w-full p-2 rounded-md"
                 name="name"
+                onChange={(event) => props.handleNameChange(event)}
+                value={props.name}
               />
             </div>
             <div className="relative mx-6 mt-2">
@@ -36,6 +47,8 @@ export const PersonalInfo = () => {
                 placeholder="e.g. stephenking@lorem.com"
                 className="border w-full p-2 rounded-md"
                 name="email"
+                onChange={(event) => props.handleEmailChange(event)}
+                value={props.email}
               />
             </div>
             <div className="relative mx-6 mt-2 pb-8">
@@ -47,6 +60,8 @@ export const PersonalInfo = () => {
                 placeholder="e.g. +1 234 567 890"
                 className="border w-full p-2 rounded-md"
                 name="phoneNumber"
+                onChange={(event) => props.handlePhoneNumberChange(event)}
+                value={props.phoneNumber}
               />
             </div>
           </form>

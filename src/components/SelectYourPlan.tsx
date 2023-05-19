@@ -33,8 +33,8 @@ export const SelectYourPlan = (props: SelectYourPlanProps) => {
           />
         </form>
         <Toggle
-          planState={props.isMonthly}
-          changePlanTime={props.changePlanTime}
+          defaultToggleState={props.isMonthly}
+          toggleChange={props.changePlanTime}
         />
       </div>
     </div>

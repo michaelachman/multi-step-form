@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import "./App.css";
 import { EndPage } from "./components/EndPage";
 import { FinishingUp } from "./components/FinishingUp";
@@ -8,12 +8,33 @@ import { PickAddons } from "./components/PickAddons";
 import { SelectYourPlan } from "./components/SelectYourPlan";
 import { Step } from "./components/Step";
 
+type Info = {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  plan: string;
+  monthlyPlanTime: boolean | null;
+  addons: string[];
+  total: number;
+};
+
 function App() {
+  const emptyInfo: Info = {
+    name: "",
+    email: "",
+    phoneNumber: "",
+    plan: "",
+    monthlyPlanTime: true,
+    addons: [],
+    total: 0,
+  };
+
   const [activeStep, setActiveStep] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
   const [isMonthly, setYearly] = useState(true);
   const [planIndex, setPlanIndex] = useState(0);
   const [selectedAddonsIndex, setSelectedAddonsIndex] = useState<number[]>([]);
+  const [formInfo, setFormInfo] = useState<Info>(emptyInfo);
 
   const steps = [
     {
@@ -91,10 +112,17 @@ function App() {
         totalPrice = totalPrice + addonsParams[index].yearlyCost;
       });
 
+  formInfo.total = totalPrice;
+
   function nextStep() {
     setActiveStep((prevValue) => {
       return prevValue + 1;
     });
+  }
+
+  function submitPersonalInfo(event) {
+    /// jak wyciagnac personalinfoform z personainfotsx zeby przyrownac name mail i phonenumber do pustego stringa
+    nextStep();
   }
 
   function goBack() {
@@ -112,10 +140,12 @@ function App() {
 
   function changePlanTime() {
     setYearly((prevV) => !prevV);
+    setFormInfo((prevV) => ({ ...prevV, monthlyPlanTime: !isMonthly }));
   }
 
   function selectOption(index: number) {
     setPlanIndex(index);
+    setFormInfo((prevV) => ({ ...prevV, plan: planParams[planIndex].title }));
   }
 
   function changeActiveStep() {
@@ -130,6 +160,10 @@ function App() {
     } else {
       setSelectedAddonsIndex((prevV) => [...prevV, index]);
     }
+    setFormInfo((prevV) => ({
+      ...prevV,
+      addons: selectedAddonsIndex.map((i) => addonsParams[i].title),
+    }));
   }
 
   function isSelected(index: number) {
@@ -139,6 +173,28 @@ function App() {
       return false;
     }
   }
+
+  function handleNameChange(event: React.FormEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setFormInfo((prevV) => ({ ...prevV, name: (event.target as any).value }));
+  }
+
+  function handleEmailChange(event: React.FormEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setFormInfo((prevV) => ({ ...prevV, email: (event.target as any).value }));
+  }
+
+  function handlePhoneNumberChange(event: React.FormEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setFormInfo((prevV) => ({
+      ...prevV,
+      phoneNumber: (event.target as any).value,
+    }));
+  }
+
+  useEffect(() => {
+    console.log(formInfo);
+  }, [formInfo]);
 
   return (
     <div className="App bg-blue-50 h-full relative pt-8">
@@ -153,7 +209,17 @@ function App() {
         ))}
       </div>
 
-      {activeStep === 1 && <PersonalInfo />}
+      {activeStep === 1 && (
+        <PersonalInfo
+          handleNameChange={handleNameChange}
+          handleEmailChange={handleEmailChange}
+          handlePhoneNumberChange={handlePhoneNumberChange}
+          submitPersonalInfo={submitPersonalInfo}
+          name={formInfo.name}
+          email={formInfo.email}
+          phoneNumber={formInfo.phoneNumber}
+        />
+      )}
       {activeStep === 2 && (
         <SelectYourPlan
           planParams={planParams}
@@ -199,12 +265,21 @@ function App() {
 
 export default App;
 
+// jak zrobic zeby phoneNumber byl typem number zeby sie apka nie wypierdalala?\
+// dlaczego w setplantime musialem dac zaprzeczenie ismonthly zeby na togglu bylo tak jak trzzeba? chyba to samo sie dzieje w komponencie toggle ze musialem zaprzeczyc zeby wyswietlalo odpowiednio
+// jak wybieram plan to mi consoleloguje CHYBA poprzednia wartosc, to trybi dobrze? a jest useeffect wykorzystany
+// tak samo jak wyzej tylko z addonsami
+// moge sobie tak po prostu wpisywac do tego obiektu przetrzymujacego (formInfo) keye, czy lepiej korzystac jakos bezposrednio z tych inputow formularzowych, np z ich atrybutu name?
+// totala przypisalem tak po prostu w apptsxie do formInfo, gitara?
+// jak wyniesc info z forma z personalinfotsx wyzej i na nim operowac w funkcji?
+
 // TASKI
+// 2. wjebac do obiektu formInfo plan, czas planu i addony /// done
 // 3. nie pozwolic na zmiane activestepa jezeli nie ma wpisanych danych na 1 stronie (walidacja)
 // 4. przeleciec po komponentach, nazewnictwo funkcji i propsow (changeState, onChange) /// done
 // 5. wyjebac reszte logiki do apptsxa (tabselect, selectedaddonsinput, chyba finishingup) /// done
-// 6. jeden obiekt ktorzy przetrzymuje cale info o stanie formularza
-// 7. ugenerycznienie komponentow (toggle) (*tabselect)
+// 6. jeden obiekt ktorzy przetrzymuje cale info o stanie formularza // done
+// 7. ugenerycznienie komponentow (toggle) (*tabselect) /// done
 
 // .... zaczac kminic jak wysylac info do serwera
 // .... potem dekstop

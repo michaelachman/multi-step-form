@@ -17,6 +17,14 @@ export const Footer = (props: FooterProps) => {
             Go back
           </button>
         )}
+        {props.index === 1 && (
+          <button
+            type="submit"
+            className="absolute w-24 h-10 my-4 right-4 bg-[#022959] text-white rounded-md"
+          >
+            Next step
+          </button>
+        )}
         {props.index !== 4 && (
           <button
             onClick={props.nextStep}
