@@ -22,8 +22,8 @@ export const TabSelect = (props: TabSelectProps) => {
       ))}
       <input
         type="hidden"
-        name={props.name}
-        value={props.planParams[props.planIndex].title}
+        // name={props.name}
+        // value={props.planParams[props.planIndex].title}
       />
     </>
   );

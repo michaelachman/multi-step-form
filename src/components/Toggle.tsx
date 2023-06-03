@@ -1,5 +1,5 @@
 export type ToggleProps = {
-  defaultToggleState: boolean;
+  isMonthly: boolean;
   toggleChange: () => void;
 };
 
@@ -8,7 +8,7 @@ export const Toggle = (props: ToggleProps) => {
     <div className="mt-6 p-3 text-center bg-gray-100 rounded-lg">
       <p
         className={`${
-          props.defaultToggleState ? "text-[#022959]" : "text-gray-400"
+          props.isMonthly ? "text-[#022959]" : "text-gray-400"
         } text-left inline-block text-sm font-bold pr-5`}
       >
         Monthly
@@ -17,16 +17,14 @@ export const Toggle = (props: ToggleProps) => {
         <input
           className="input"
           type="checkbox"
-          defaultChecked={!props.defaultToggleState}
+          defaultChecked={!props.isMonthly}
           onClick={props.toggleChange}
         />
         <span className="span" />
       </label>
       <p
         className={`${
-          props.defaultToggleState
-            ? "text-gray-400"
-            : "text-[#022959] font-bold"
+          props.isMonthly ? "text-gray-400" : "text-[#022959] font-bold"
         } text-right inline-block text-sm font-bold pl-5`}
       >
         Yearly

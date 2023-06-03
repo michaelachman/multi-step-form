@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { EndPage } from "./components/EndPage";
 import { FinishingUp } from "./components/FinishingUp";
@@ -12,9 +12,9 @@ type Info = {
   name: string;
   email: string;
   phoneNumber: string;
-  plan: string;
-  monthlyPlanTime: boolean | null;
-  addons: string[];
+  planIndex: number;
+  monthlyPlanTime: boolean;
+  addons: number[];
   total: number;
 };
 
@@ -23,7 +23,7 @@ function App() {
     name: "",
     email: "",
     phoneNumber: "",
-    plan: "",
+    planIndex: 0,
     monthlyPlanTime: true,
     addons: [],
     total: 0,
@@ -31,9 +31,9 @@ function App() {
 
   const [activeStep, setActiveStep] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
-  const [isMonthly, setYearly] = useState(true);
-  const [planIndex, setPlanIndex] = useState(0);
-  const [selectedAddonsIndex, setSelectedAddonsIndex] = useState<number[]>([]);
+  // const [isMonthly, setYearly] = useState(true);
+  // const [planIndex, setPlanIndex] = useState(0);
+  // const [selectedAddonsIndex, setSelectedAddonsIndex] = useState<number[]>([]);
   const [formInfo, setFormInfo] = useState<Info>(emptyInfo);
 
   const steps = [
@@ -81,18 +81,21 @@ function App() {
 
   const addonsParams = [
     {
+      key: 1,
       title: "Online service",
       description: "Access to multiplayer games",
       monthlyCost: 1,
       yearlyCost: 10,
     },
     {
+      key: 2,
       title: "Larger storage",
       description: "Extra 1TB of cloud save",
       monthlyCost: 2,
       yearlyCost: 20,
     },
     {
+      key: 3,
       title: "Customizable profile",
       description: "Custom theme on your profile",
       monthlyCost: 2,
@@ -100,29 +103,27 @@ function App() {
     },
   ];
 
-  let totalPrice = isMonthly
-    ? planParams[planIndex].monthlyCost
-    : planParams[planIndex].yearlyCost;
+  useEffect(() => {
+    setFormInfo((prevV) => {
+      let totalPrice = formInfo.monthlyPlanTime
+        ? planParams[formInfo.planIndex].monthlyCost
+        : planParams[formInfo.planIndex].yearlyCost;
 
-  isMonthly
-    ? selectedAddonsIndex.forEach((index) => {
-        totalPrice = totalPrice + addonsParams[index].monthlyCost;
-      })
-    : selectedAddonsIndex.forEach((index) => {
-        totalPrice = totalPrice + addonsParams[index].yearlyCost;
-      });
-
-  formInfo.total = totalPrice;
+      formInfo.monthlyPlanTime
+        ? formInfo.addons.forEach((index) => {
+            totalPrice = totalPrice + addonsParams[index].monthlyCost;
+          })
+        : formInfo.addons.forEach((index) => {
+            totalPrice = totalPrice + addonsParams[index].yearlyCost;
+          });
+      return { ...prevV, total: totalPrice };
+    });
+  }, [formInfo.monthlyPlanTime, formInfo.planIndex, formInfo.addons]);
 
   function nextStep() {
     setActiveStep((prevValue) => {
       return prevValue + 1;
     });
-  }
-
-  function submitPersonalInfo(event) {
-    /// jak wyciagnac personalinfoform z personainfotsx zeby przyrownac name mail i phonenumber do pustego stringa
-    nextStep();
   }
 
   function goBack() {
@@ -139,35 +140,47 @@ function App() {
   }
 
   function changePlanTime() {
-    setYearly((prevV) => !prevV);
-    setFormInfo((prevV) => ({ ...prevV, monthlyPlanTime: !isMonthly }));
+    // setYearly((prevV) => !prevV);
+    setFormInfo((prevV) => ({
+      ...prevV,
+      monthlyPlanTime: !formInfo.monthlyPlanTime,
+    }));
   }
 
   function selectOption(index: number) {
-    setPlanIndex(index);
-    setFormInfo((prevV) => ({ ...prevV, plan: planParams[planIndex].title }));
+    // setPlanIndex(index);
+    setFormInfo((prevV) => ({ ...prevV, plan: planParams[index].title }));
   }
 
   function changeActiveStep() {
     setActiveStep(2);
   }
 
-  function toggleAddons(index: number) {
-    if (selectedAddonsIndex.includes(index)) {
-      setSelectedAddonsIndex((prevV) =>
-        prevV.filter((prevVel, prevIndex) => prevVel !== index)
-      );
-    } else {
-      setSelectedAddonsIndex((prevV) => [...prevV, index]);
-    }
+  // function toggleAddons(index: number) {
+  //   if (selectedAddonsIndex.includes(index)) {
+  //     setSelectedAddonsIndex((prevV) =>
+  //       prevV.filter((prevVel, prevIndex) => prevVel !== index)
+  //     );
+  //   } else {
+  //     setSelectedAddonsIndex((prevV) => [...prevV, index]);
+  //   }
+  //   setFormInfo((prevV) => ({
+  //     ...prevV,
+  //     addons: selectedAddonsIndex.map((i) => addonsParams[i].title),
+  //   }));
+  // }
+
+  function toggleAddons(key: number) {
     setFormInfo((prevV) => ({
       ...prevV,
-      addons: selectedAddonsIndex.map((i) => addonsParams[i].title),
+      addons: prevV.addons.includes(key)
+        ? prevV.addons.filter((prevVel) => prevVel !== key)
+        : [...prevV.addons, key],
     }));
   }
 
-  function isSelected(index: number) {
-    if (selectedAddonsIndex.includes(index)) {
+  function isSelected(key: number) {
+    if (formInfo.addons.includes(key)) {
       return true;
     } else {
       return false;
@@ -176,6 +189,8 @@ function App() {
 
   function handleNameChange(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
+    const nameInput = event.target as HTMLInputElement;
+    console.log(nameInput.validity);
     setFormInfo((prevV) => ({ ...prevV, name: (event.target as any).value }));
   }
 
@@ -192,13 +207,13 @@ function App() {
     }));
   }
 
-  useEffect(() => {
-    console.log(formInfo);
-  }, [formInfo]);
+  // useEffect(() => {
+  //   console.log(formInfo);
+  // }, [formInfo]);
 
   return (
-    <div className="App bg-blue-50 h-full relative pt-8">
-      <div className="absolute bg-steps-background-mobile bg-no-repeat bg-cover h-[172px] w-full top-0"></div>
+    <div className="App bg-blue-50 h-full relative pt-8 md:justify-center md:flex">
+      <div className="absolute bg-steps-background-mobile bg-no-repeat bg-cover h-[172px] w-full top-0 md:bg-steps-background-desktop md:h-[568px] md:w-[274px]"></div>
       <div className="steps-container flex flex-row gap-4 relative justify-center pb-[34px]">
         {steps.map((step) => (
           <Step
@@ -214,7 +229,6 @@ function App() {
           handleNameChange={handleNameChange}
           handleEmailChange={handleEmailChange}
           handlePhoneNumberChange={handlePhoneNumberChange}
-          submitPersonalInfo={submitPersonalInfo}
           name={formInfo.name}
           email={formInfo.email}
           phoneNumber={formInfo.phoneNumber}
@@ -223,30 +237,30 @@ function App() {
       {activeStep === 2 && (
         <SelectYourPlan
           planParams={planParams}
-          isMonthly={isMonthly}
+          isMonthly={formInfo.monthlyPlanTime}
           changePlanTime={changePlanTime}
           selectOption={(index) => selectOption(index)}
-          planIndex={planIndex}
+          planIndex={formInfo.planIndex}
         />
       )}
       {activeStep === 3 && (
         <PickAddons
           addonsParams={addonsParams}
-          isMonthly={isMonthly}
+          isMonthly={formInfo.monthlyPlanTime}
           toggleAddons={toggleAddons}
-          selectedAddonsIndex={selectedAddonsIndex}
-          isSelected={(index) => isSelected(index)}
+          selectedAddonsKeys={formInfo.addons}
+          isSelected={(key) => isSelected(key)}
         />
       )}
       {activeStep === 4 && !isFinished && (
         <FinishingUp
-          isMonthly={isMonthly}
-          planIndex={planIndex}
+          isMonthly={formInfo.monthlyPlanTime}
+          planIndex={formInfo.planIndex}
           planParams={planParams}
           addonsParams={addonsParams}
           changeActiveStep={changeActiveStep}
-          selectedAddonsIndex={selectedAddonsIndex}
-          totalPrice={totalPrice}
+          selectedAddonsKeys={formInfo.addons}
+          totalPrice={formInfo.total}
         />
       )}
       {activeStep === 4 && isFinished && <EndPage />}
@@ -265,14 +279,6 @@ function App() {
 
 export default App;
 
-// jak zrobic zeby phoneNumber byl typem number zeby sie apka nie wypierdalala?\
-// dlaczego w setplantime musialem dac zaprzeczenie ismonthly zeby na togglu bylo tak jak trzzeba? chyba to samo sie dzieje w komponencie toggle ze musialem zaprzeczyc zeby wyswietlalo odpowiednio
-// jak wybieram plan to mi consoleloguje CHYBA poprzednia wartosc, to trybi dobrze? a jest useeffect wykorzystany
-// tak samo jak wyzej tylko z addonsami
-// moge sobie tak po prostu wpisywac do tego obiektu przetrzymujacego (formInfo) keye, czy lepiej korzystac jakos bezposrednio z tych inputow formularzowych, np z ich atrybutu name?
-// totala przypisalem tak po prostu w apptsxie do formInfo, gitara?
-// jak wyniesc info z forma z personalinfotsx wyzej i na nim operowac w funkcji?
-
 // TASKI
 // 2. wjebac do obiektu formInfo plan, czas planu i addony /// done
 // 3. nie pozwolic na zmiane activestepa jezeli nie ma wpisanych danych na 1 stronie (walidacja)
@@ -280,6 +286,11 @@ export default App;
 // 5. wyjebac reszte logiki do apptsxa (tabselect, selectedaddonsinput, chyba finishingup) /// done
 // 6. jeden obiekt ktorzy przetrzymuje cale info o stanie formularza // done
 // 7. ugenerycznienie komponentow (toggle) (*tabselect) /// done
+// 8. zmienic nazwe selectedaddonsindex na keye // done
+// 9. wyjebac niepotrzebne stejty na rzecz stanow z forminfo (isMonthly na przyklad - dokonczyc)
+// 10. ogarnac wysypujacy sie pickaddons jak wybierzesz wszystkie 3 addonsy (powiazane z tym ze jest index grany dalej w najwyzszym useeffecie)
+// 11. planindex tez pozmieniac na keye chyba mimo ze to nie arrayka jak addony
+// 12. selectoption tam ma dalej uzycie chyba .plan i cos z tym kminic jeszcze
 
 // .... zaczac kminic jak wysylac info do serwera
 // .... potem dekstop

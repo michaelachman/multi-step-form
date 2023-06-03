@@ -10,13 +10,17 @@ export const Step = (props: StepProps) => {
     : "bg-transparent text-white";
 
   return (
-    <div>
+    <div className="flex">
       <div
         className={`step border border-slate-200 rounded-full w-[33px] h-[33px] flex items-center justify-center ${stepClass}`}
       >
         {props.index}
       </div>
-      <div className="hidden md:flex">{props.title}</div>
+      <div className="hidden md:flex text-white font-semibold">
+        <p>STEP {props.index}</p>
+        <br></br>
+        {props.title}
+      </div>
     </div>
   );
 };

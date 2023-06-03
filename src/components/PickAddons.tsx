@@ -4,9 +4,10 @@ import { SelectedAddonsInput } from "./SelectedAddonsInput";
 export type PickAddonsProps = {
   isMonthly: boolean;
   addonsParams: AddonParams[];
-  toggleAddons: (index: number) => void;
-  selectedAddonsIndex: number[];
-  isSelected: (index: number) => boolean;
+  toggleAddons: (key: number) => void;
+  // toggleAddons: (event: React.MouseEvent<HTMLElement>) => void;
+  selectedAddonsKeys: number[];
+  isSelected: (key: number) => boolean;
 };
 
 export const PickAddons = (props: PickAddonsProps) => {
@@ -24,8 +25,8 @@ export const PickAddons = (props: PickAddonsProps) => {
             isMonthly={props.isMonthly}
             addonsParams={props.addonsParams}
             toggleAddons={props.toggleAddons}
-            selectedAddonsIndex={props.selectedAddonsIndex}
-            isSelected={(index) => props.isSelected(index)}
+            selectedAddonsKeys={props.selectedAddonsKeys}
+            isSelected={(key) => props.isSelected(key)}
           />
         </form>
       </div>

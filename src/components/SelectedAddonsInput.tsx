@@ -1,39 +1,29 @@
-import { useEffect, useState } from "react";
 import { Addon, AddonParams } from "./Addon";
 
 export type SelectedAddonsInputProps = {
   addonsParams: AddonParams[];
   isMonthly: boolean;
-  toggleAddons: (index: number) => void;
-  selectedAddonsIndex: number[];
-  isSelected: (index: number) => boolean;
+  toggleAddons: (key: number) => void;
+  // toggleAddons: (event: React.MouseEvent<HTMLElement>) => void;
+  selectedAddonsKeys: number[];
+  isSelected: (key: number) => boolean;
 };
 
 export const SelectedAddonsInput = (props: SelectedAddonsInputProps) => {
-  // function isSelected(index: number) {
-  //   if (props.selectedAddonsIndex.includes(index)) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   return (
     <>
-      {props.addonsParams.map((param, index) => (
+      {props.addonsParams.map((param) => (
         <Addon
           addonsParams={param}
-          toggleAddons={() => props.toggleAddons(index)}
-          isSelected={props.isSelected(index)}
+          toggleAddons={() => props.toggleAddons(param.key)}
+          isSelected={props.isSelected(param.key)}
           isMonthly={props.isMonthly}
         />
       ))}
 
       <input
         type="hidden"
-        value={props.selectedAddonsIndex.map(
-          (i) => props.addonsParams[i].title
-        )}
+        // value={props.selectedAddonsKeys.map((i) => props.addonsParams[i].title)}
       ></input>
     </>
   );

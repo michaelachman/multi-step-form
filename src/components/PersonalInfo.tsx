@@ -4,7 +4,6 @@ export type PersonalInfoProps = {
   handleNameChange: (event: React.FormEvent<HTMLInputElement>) => void;
   handleEmailChange: (event: React.FormEvent<HTMLInputElement>) => void;
   handlePhoneNumberChange: (event: React.FormEvent<HTMLInputElement>) => void;
-  submitPersonalInfo: (event: React.SyntheticEvent) => void;
   name: string;
   email: string;
   phoneNumber: string;
@@ -23,10 +22,7 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
           </p>
         </div>
         <div className="options">
-          <form
-            name="personalInfoForm"
-            onSubmit={(event) => props.submitPersonalInfo(event)}
-          >
+          <form name="personalInfoForm">
             <div className="relative mx-6">
               <label className="text-[#022959] text-sm pl-1">Name</label>
               <input
@@ -36,6 +32,7 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
                 name="name"
                 onChange={(event) => props.handleNameChange(event)}
                 value={props.name}
+                required
               />
             </div>
             <div className="relative mx-6 mt-2">

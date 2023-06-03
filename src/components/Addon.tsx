@@ -1,4 +1,5 @@
 export type AddonParams = {
+  key: number;
   title: string;
   description: string;
   monthlyCost: number;

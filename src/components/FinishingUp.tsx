@@ -7,25 +7,13 @@ export type FinishingUpProps = {
   planParams: PlanParams[];
   addonsParams: AddonParams[];
   changeActiveStep: () => void;
-  selectedAddonsIndex: number[];
+  selectedAddonsKeys: number[];
   totalPrice: number;
 };
 
 export const FinishingUp = (props: FinishingUpProps) => {
   const monthlyPlan = `$${props.planParams[props.planIndex].monthlyCost}/mo`;
   const yearlyPlan = `$${props.planParams[props.planIndex].yearlyCost}/yr`;
-
-  // let totalPrice = props.isMonthly
-  //   ? props.planParams[props.planIndex].monthlyCost
-  //   : props.planParams[props.planIndex].yearlyCost;
-
-  // props.isMonthly
-  //   ? props.selectedAddonsIndex.forEach((index) => {
-  //       totalPrice = totalPrice + props.addonsParams[index].monthlyCost;
-  //     })
-  //   : props.selectedAddonsIndex.forEach((index) => {
-  //       totalPrice = totalPrice + props.addonsParams[index].yearlyCost;
-  //     });
 
   return (
     <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
@@ -55,14 +43,14 @@ export const FinishingUp = (props: FinishingUpProps) => {
             </p>
           </div>
         </div>
-        {props.selectedAddonsIndex.length === 0 ? undefined : (
+        {props.selectedAddonsKeys.length === 0 ? undefined : (
           <>
             <hr className="mt-2"></hr>
           </>
         )}
 
         <div className="pt-3">
-          {props.selectedAddonsIndex.map((param) => (
+          {props.selectedAddonsKeys.map((param) => (
             <div className="flex justify-between pb-2">
               <div className="">
                 <p className="text-gray-400">
