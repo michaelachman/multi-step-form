@@ -1,14 +1,13 @@
-import { useState } from "react";
 import { TabSelect } from "./TabSelect";
-import { PlanParams, TabToSelect } from "./TabToSelect";
+import { PlanParams } from "./TabToSelect";
 import { Toggle } from "./Toggle";
 
 export type SelectYourPlanProps = {
   isMonthly: boolean;
   changePlanTime: () => void;
-  selectOption: (index: number) => void;
+  selectOption: (key: number) => void;
   planParams: PlanParams[];
-  planIndex: number;
+  planKey: number;
 };
 
 export const SelectYourPlan = (props: SelectYourPlanProps) => {
@@ -28,8 +27,8 @@ export const SelectYourPlan = (props: SelectYourPlanProps) => {
             planParams={props.planParams}
             name="Params"
             isMonthly={props.isMonthly}
-            selectOption={(index) => props.selectOption(index)}
-            planIndex={props.planIndex}
+            selectOption={(key) => props.selectOption(key)}
+            planKey={props.planKey}
           />
         </form>
         <Toggle

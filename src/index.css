@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+
+.invalid {
+    @apply border border-red-500;
+}
+
+}

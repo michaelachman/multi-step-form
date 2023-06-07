@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { useState } from "react";
 
 export type PersonalInfoProps = {
   handleNameChange: (event: React.FormEvent<HTMLInputElement>) => void;
@@ -10,6 +10,9 @@ export type PersonalInfoProps = {
 };
 
 export const PersonalInfo = (props: PersonalInfoProps) => {
+  
+  const [nameValid, setNameValid] = useState(true)
+
   return (
     <div>
       <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
@@ -28,9 +31,14 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
               <input
                 type="text"
                 placeholder="e.g. Stephen King"
-                className="border w-full p-2 rounded-md"
+                className={`border w-full p-2 rounded-md ${nameValid ? "" : "invalid"}`}
                 name="name"
-                onChange={(event) => props.handleNameChange(event)}
+                onChange={(event) => {
+                  props.handleNameChange(event)
+                  const nameInput = event.target as HTMLInputElement;
+                  console.log(nameInput.validity);
+                  setNameValid(nameInput.validity.valid)
+                }}
                 value={props.name}
                 required
               />

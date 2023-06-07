@@ -12,7 +12,7 @@ type Info = {
   name: string;
   email: string;
   phoneNumber: string;
-  planIndex: number;
+  planKey: number;
   monthlyPlanTime: boolean;
   addons: number[];
   total: number;
@@ -23,7 +23,7 @@ function App() {
     name: "",
     email: "",
     phoneNumber: "",
-    planIndex: 0,
+    planKey: 1,
     monthlyPlanTime: true,
     addons: [],
     total: 0,
@@ -57,6 +57,7 @@ function App() {
 
   const planParams = [
     {
+      key: 1,
       image: "/src/assets/images/icon-arcade.svg",
       title: "Arcade",
       monthlyCost: 9,
@@ -64,6 +65,7 @@ function App() {
       yearlyText: "2 months free",
     },
     {
+      key: 2,
       image: "/src/assets/images/icon-advanced.svg",
       title: "Advanced",
       monthlyCost: 12,
@@ -71,6 +73,7 @@ function App() {
       yearlyText: "2 months free",
     },
     {
+      key: 3,
       image: "/src/assets/images/icon-pro.svg",
       title: "Pro",
       monthlyCost: 15,
@@ -106,19 +109,19 @@ function App() {
   useEffect(() => {
     setFormInfo((prevV) => {
       let totalPrice = formInfo.monthlyPlanTime
-        ? planParams[formInfo.planIndex].monthlyCost
-        : planParams[formInfo.planIndex].yearlyCost;
+        ? planParams[formInfo.planKey - 1].monthlyCost
+        : planParams[formInfo.planKey - 1].yearlyCost;
 
       formInfo.monthlyPlanTime
         ? formInfo.addons.forEach((index) => {
-            totalPrice = totalPrice + addonsParams[index].monthlyCost;
+            totalPrice = totalPrice + addonsParams[index - 1].monthlyCost;
           })
         : formInfo.addons.forEach((index) => {
-            totalPrice = totalPrice + addonsParams[index].yearlyCost;
+            totalPrice = totalPrice + addonsParams[index - 1].yearlyCost;
           });
       return { ...prevV, total: totalPrice };
     });
-  }, [formInfo.monthlyPlanTime, formInfo.planIndex, formInfo.addons]);
+  }, [formInfo.monthlyPlanTime, formInfo.planKey, formInfo.addons]);
 
   function nextStep() {
     setActiveStep((prevValue) => {
@@ -147,9 +150,9 @@ function App() {
     }));
   }
 
-  function selectOption(index: number) {
+  function selectOption(key: number) {
     // setPlanIndex(index);
-    setFormInfo((prevV) => ({ ...prevV, plan: planParams[index].title }));
+    setFormInfo((prevV) => ({ ...prevV, planKey: key }));
   }
 
   function changeActiveStep() {
@@ -207,9 +210,9 @@ function App() {
     }));
   }
 
-  // useEffect(() => {
-  //   console.log(formInfo);
-  // }, [formInfo]);
+  useEffect(() => {
+    console.log(formInfo);
+  }, [formInfo]);
 
   return (
     <div className="App bg-blue-50 h-full relative pt-8 md:justify-center md:flex">
@@ -240,7 +243,7 @@ function App() {
           isMonthly={formInfo.monthlyPlanTime}
           changePlanTime={changePlanTime}
           selectOption={(index) => selectOption(index)}
-          planIndex={formInfo.planIndex}
+          planKey={formInfo.planKey}
         />
       )}
       {activeStep === 3 && (
@@ -255,7 +258,7 @@ function App() {
       {activeStep === 4 && !isFinished && (
         <FinishingUp
           isMonthly={formInfo.monthlyPlanTime}
-          planIndex={formInfo.planIndex}
+          planKey={formInfo.planKey}
           planParams={planParams}
           addonsParams={addonsParams}
           changeActiveStep={changeActiveStep}
@@ -287,10 +290,10 @@ export default App;
 // 6. jeden obiekt ktorzy przetrzymuje cale info o stanie formularza // done
 // 7. ugenerycznienie komponentow (toggle) (*tabselect) /// done
 // 8. zmienic nazwe selectedaddonsindex na keye // done
-// 9. wyjebac niepotrzebne stejty na rzecz stanow z forminfo (isMonthly na przyklad - dokonczyc)
-// 10. ogarnac wysypujacy sie pickaddons jak wybierzesz wszystkie 3 addonsy (powiazane z tym ze jest index grany dalej w najwyzszym useeffecie)
-// 11. planindex tez pozmieniac na keye chyba mimo ze to nie arrayka jak addony
-// 12. selectoption tam ma dalej uzycie chyba .plan i cos z tym kminic jeszcze
+// 9. wyjebac niepotrzebne stejty na rzecz stanow z forminfo (isMonthly na przyklad - dokonczyc) // done
+// 10. ogarnac wysypujacy sie pickaddons jak wybierzesz wszystkie 3 addonsy (powiazane z tym ze jest index grany dalej w najwyzszym useeffecie) // done
+// 11. planindex tez pozmieniac na keye chyba mimo ze to nie arrayka jak addony // done
+// 12. selectoption tam ma dalej uzycie chyba .plan i cos z tym kminic jeszcze // done
 
 // .... zaczac kminic jak wysylac info do serwera
 // .... potem dekstop

@@ -1,4 +1,5 @@
 export type PlanParams = {
+  key: number;
   image: string;
   title: string;
   monthlyCost: number;

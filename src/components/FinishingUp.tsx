@@ -3,7 +3,7 @@ import { PlanParams } from "./TabToSelect";
 
 export type FinishingUpProps = {
   isMonthly: boolean;
-  planIndex: number;
+  planKey: number;
   planParams: PlanParams[];
   addonsParams: AddonParams[];
   changeActiveStep: () => void;
@@ -12,8 +12,8 @@ export type FinishingUpProps = {
 };
 
 export const FinishingUp = (props: FinishingUpProps) => {
-  const monthlyPlan = `$${props.planParams[props.planIndex].monthlyCost}/mo`;
-  const yearlyPlan = `$${props.planParams[props.planIndex].yearlyCost}/yr`;
+  const monthlyPlan = `$${props.planParams[props.planKey - 1].monthlyCost}/mo`;
+  const yearlyPlan = `$${props.planParams[props.planKey - 1].yearlyCost}/yr`;
 
   return (
     <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
@@ -27,7 +27,7 @@ export const FinishingUp = (props: FinishingUpProps) => {
         <div className="mb-0 flex justify-between">
           <div className="">
             <p className="font-bold text-[#022959]">
-              {props.planParams[props.planIndex].title}{" "}
+              {props.planParams[props.planKey - 1].title}{" "}
               {props.isMonthly ? "(Monthly)" : "(Yearly)"}
             </p>
             <p
@@ -50,18 +50,18 @@ export const FinishingUp = (props: FinishingUpProps) => {
         )}
 
         <div className="pt-3">
-          {props.selectedAddonsKeys.map((param) => (
+          {props.selectedAddonsKeys.map((key) => (
             <div className="flex justify-between pb-2">
               <div className="">
                 <p className="text-gray-400">
-                  {props.addonsParams[param].title}
+                  {props.addonsParams[key - 1].title}
                 </p>
               </div>
               <div>
                 <p className="font-bold text-[#022959] text-sm pr-4">
                   {props.isMonthly
-                    ? `+$${props.addonsParams[param].monthlyCost}/mo`
-                    : `+$${props.addonsParams[param].yearlyCost}/yr`}
+                    ? `+$${props.addonsParams[key - 1].monthlyCost}/mo`
+                    : `+$${props.addonsParams[key - 1].yearlyCost}/yr`}
                 </p>
               </div>
             </div>

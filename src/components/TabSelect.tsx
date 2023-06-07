@@ -1,22 +1,23 @@
-import { useState } from "react";
-import { PlanParams, TabToSelect, TabToSelectProps } from "./TabToSelect";
+import { PlanParams, TabToSelect } from "./TabToSelect";
 
 export type TabSelectProps = {
   planParams: PlanParams[];
   name: string;
   isMonthly: boolean;
-  selectOption: (index: number) => void;
-  planIndex: number;
+  selectOption: (key: number) => void;
+  planKey: number;
 };
 
 export const TabSelect = (props: TabSelectProps) => {
   return (
     <>
       {props.planParams.map((param, index) => (
+
+        
         <TabToSelect
           option={param}
-          selectOption={() => props.selectOption(index)}
-          isSelected={props.planIndex === index}
+          selectOption={() => props.selectOption(param.key)}
+          isSelected={props.planKey === index+1}  // tytautawufoijawiofjawiofawiogfjioajigof
           isMonthly={props.isMonthly}
         />
       ))}
