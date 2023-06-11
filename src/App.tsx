@@ -18,6 +18,13 @@ type Info = {
   total: number;
 };
 
+type Validity = {
+  begin: boolean | null,
+  name: boolean;
+  email: boolean;
+  phoneNumber: boolean;
+}
+
 function App() {
   const emptyInfo: Info = {
     name: "",
@@ -29,12 +36,21 @@ function App() {
     total: 0,
   };
 
+  const beginValidity: Validity = {
+    begin: null,
+    name: true,
+    email: true,
+    phoneNumber: true
+  }
+
   const [activeStep, setActiveStep] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
   // const [isMonthly, setYearly] = useState(true);
   // const [planIndex, setPlanIndex] = useState(0);
   // const [selectedAddonsIndex, setSelectedAddonsIndex] = useState<number[]>([]);
   const [formInfo, setFormInfo] = useState<Info>(emptyInfo);
+  const [validity, setValidity] = useState<Validity>(beginValidity)
+  const [validityPass, SetValidityPass] = useState(false)
 
   const steps = [
     {
@@ -159,19 +175,6 @@ function App() {
     setActiveStep(2);
   }
 
-  // function toggleAddons(index: number) {
-  //   if (selectedAddonsIndex.includes(index)) {
-  //     setSelectedAddonsIndex((prevV) =>
-  //       prevV.filter((prevVel, prevIndex) => prevVel !== index)
-  //     );
-  //   } else {
-  //     setSelectedAddonsIndex((prevV) => [...prevV, index]);
-  //   }
-  //   setFormInfo((prevV) => ({
-  //     ...prevV,
-  //     addons: selectedAddonsIndex.map((i) => addonsParams[i].title),
-  //   }));
-  // }
 
   function toggleAddons(key: number) {
     setFormInfo((prevV) => ({
@@ -193,13 +196,23 @@ function App() {
   function handleNameChange(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
     const nameInput = event.target as HTMLInputElement;
-    console.log(nameInput.validity);
+    // console.log(nameInput.validity);
     setFormInfo((prevV) => ({ ...prevV, name: (event.target as any).value }));
+  }
+
+  function handleNameValidity(event: React.FormEvent<HTMLInputElement>) {
+    const nameInput = event.target as HTMLInputElement;
+    setValidity((prevV) => ({...prevV, name: nameInput.validity.valid}))
   }
 
   function handleEmailChange(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
     setFormInfo((prevV) => ({ ...prevV, email: (event.target as any).value }));
+  }
+
+  function handleEmailValidity(event: React.FormEvent<HTMLInputElement>) {
+    const emailInput = event.target as HTMLInputElement;
+    setValidity((prevV) => ({...prevV, email: emailInput.validity.valid}))
   }
 
   function handlePhoneNumberChange(event: React.FormEvent<HTMLInputElement>) {
@@ -210,9 +223,23 @@ function App() {
     }));
   }
 
+  function handlePhoneNumberValidity(event: React.FormEvent<HTMLInputElement>) {
+    const phoneNumberInput = event.target as HTMLInputElement;
+    setValidity((prevV) => ({...prevV, phoneNumber: phoneNumberInput.validity.valid}))
+  }
+
+  function validityCheck() {
+    if (validity.name, validity.email, validity.phoneNumber) {
+      SetValidityPass((prevV) => !prevV)
+    } else {
+      SetValidityPass((prevV) => prevV)
+    }
+  }
+
   useEffect(() => {
     console.log(formInfo);
   }, [formInfo]);
+
 
   return (
     <div className="App bg-blue-50 h-full relative pt-8 md:justify-center md:flex">
@@ -230,8 +257,11 @@ function App() {
       {activeStep === 1 && (
         <PersonalInfo
           handleNameChange={handleNameChange}
+          handleNameValidity={handleNameValidity}
           handleEmailChange={handleEmailChange}
+          handleEmailValidity={handleEmailValidity}
           handlePhoneNumberChange={handlePhoneNumberChange}
+          handlePhoneNumberValidity={handlePhoneNumberValidity}
           name={formInfo.name}
           email={formInfo.email}
           phoneNumber={formInfo.phoneNumber}
@@ -274,6 +304,7 @@ function App() {
           nextStep={nextStep}
           goBack={goBack}
           confirmButton={confirmButton}
+          validityCheck={validityCheck}
         />
       )}
     </div>

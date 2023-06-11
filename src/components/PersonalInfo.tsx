@@ -2,8 +2,11 @@ import { useState } from "react";
 
 export type PersonalInfoProps = {
   handleNameChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  handleNameValidity: (event: React.FormEvent<HTMLInputElement>) => void;
   handleEmailChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  handleEmailValidity: (event: React.FormEvent<HTMLInputElement>) => void;
   handlePhoneNumberChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  handlePhoneNumberValidity: (event: React.FormEvent<HTMLInputElement>) => void;
   name: string;
   email: string;
   phoneNumber: string;
@@ -35,12 +38,13 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
                 name="name"
                 onChange={(event) => {
                   props.handleNameChange(event)
-                  const nameInput = event.target as HTMLInputElement;
-                  console.log(nameInput.validity);
-                  setNameValid(nameInput.validity.valid)
+                  props.handleNameValidity(event)
+                  // const nameInput = event.target as HTMLInputElement;
+                  // console.log(nameInput.validity);
+                  // setNameValid(nameInput.validity.valid)
                 }}
                 value={props.name}
-                required
+                // required
               />
             </div>
             <div className="relative mx-6 mt-2">
@@ -52,7 +56,10 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
                 placeholder="e.g. stephenking@lorem.com"
                 className="border w-full p-2 rounded-md"
                 name="email"
-                onChange={(event) => props.handleEmailChange(event)}
+                onChange={(event) => {
+                  props.handleEmailChange(event)
+                  props.handleEmailValidity(event)
+                }}
                 value={props.email}
               />
             </div>
@@ -65,7 +72,10 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
                 placeholder="e.g. +1 234 567 890"
                 className="border w-full p-2 rounded-md"
                 name="phoneNumber"
-                onChange={(event) => props.handlePhoneNumberChange(event)}
+                onChange={(event) => {
+                  props.handlePhoneNumberChange(event)
+                  props.handlePhoneNumberValidity(event)
+                }}
                 value={props.phoneNumber}
               />
             </div>

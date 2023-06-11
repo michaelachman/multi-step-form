@@ -3,6 +3,7 @@ export type FooterProps = {
   nextStep: () => void;
   goBack: () => void;
   confirmButton: () => void;
+  validityCheck: () => void;
 };
 
 export const Footer = (props: FooterProps) => {
@@ -19,7 +20,7 @@ export const Footer = (props: FooterProps) => {
         )}
         {props.index === 1 && (
           <button
-            type="submit"
+          onClick={props.validityCheck}
             className="absolute w-24 h-10 my-4 right-4 bg-[#022959] text-white rounded-md"
           >
             Next step
