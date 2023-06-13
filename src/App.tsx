@@ -231,9 +231,19 @@ function App() {
   function validityCheck() {
     if (validity.name, validity.email, validity.phoneNumber) {
       SetValidityPass((prevV) => !prevV)
-    } else {
+      nextStep()
+    } else if (!validity.name) {
       SetValidityPass((prevV) => prevV)
-    }
+      setValidity((prevV) => ({...prevV, name: false}))
+    } else if (!validity.email) {
+      SetValidityPass((prevV) => prevV)
+      setValidity((prevV) => ({...prevV, email: false}))
+    } else if (!validity.phoneNumber) {
+      SetValidityPass((prevV) => prevV)
+      setValidity((prevV) => ({...prevV, phoneNumber: false}))
+    } else undefined
+      
+    
   }
 
   useEffect(() => {
