@@ -12,14 +12,14 @@ export type PickAddonsProps = {
 
 export const PickAddons = (props: PickAddonsProps) => {
   return (
-    <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
+    <div>
       <div className="title px-6 pt-8">
         <h1 className="text-2xl font-bold text-[#022959] pb-2">Pick add-ons</h1>
         <p className="font-normal text-[#9699AA] mb-6">
           Add-ons help enhance your gaming experience.
         </p>
       </div>
-      <div className="mx-6 pb-6 mt-5 mb-8">
+      <div className="mx-6 pb-6 mt-5 mb-8 md:ml-6 md:mr-24">
         <form>
           <SelectedAddonsInput
             isMonthly={props.isMonthly}

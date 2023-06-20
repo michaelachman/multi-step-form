@@ -16,7 +16,7 @@ export const FinishingUp = (props: FinishingUpProps) => {
   const yearlyPlan = `$${props.planParams[props.planKey - 1].yearlyCost}/yr`;
 
   return (
-    <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
+    <div>
       <div className="title px-6 pt-8">
         <h1 className="text-2xl font-bold text-[#022959] pb-2">Finishing up</h1>
         <p className="font-normal text-[#9699AA] mb-6">

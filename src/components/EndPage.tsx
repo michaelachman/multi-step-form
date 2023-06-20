@@ -1,6 +1,6 @@
 export const EndPage = () => {
   return (
-    <div className="flex flex-row card bg-white relative mx-4 pt-8 pb-10 rounded-lg drop-shadow-lg text-center">
+    <div className="flex flex-row text-center">
       <div className="title px-6 pt-8">
         <div className="flex justify-center">
           <img

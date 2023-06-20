@@ -37,10 +37,10 @@ function App() {
   };
 
   const beginValidity: Validity = {
-    begin: null,
-    name: true,
-    email: true,
-    phoneNumber: true
+    begin: true,
+    name: false,
+    email: false,
+    phoneNumber: false
   }
 
   const [activeStep, setActiveStep] = useState(1);
@@ -197,7 +197,7 @@ function App() {
     event.preventDefault();
     const nameInput = event.target as HTMLInputElement;
     // console.log(nameInput.validity);
-    setFormInfo((prevV) => ({ ...prevV, name: (event.target as any).value }));
+    setFormInfo((prevV) => ({ ...prevV, name: (nameInput as any).value }));
   }
 
   function handleNameValidity(event: React.FormEvent<HTMLInputElement>) {
@@ -229,22 +229,19 @@ function App() {
   }
 
   function validityCheck() {
-    if (validity.name, validity.email, validity.phoneNumber) {
-      SetValidityPass((prevV) => !prevV)
-      nextStep()
+    if (validity.name && validity.email && validity.phoneNumber) {
+      SetValidityPass(true);
     } else if (!validity.name) {
-      SetValidityPass((prevV) => prevV)
       setValidity((prevV) => ({...prevV, name: false}))
     } else if (!validity.email) {
-      SetValidityPass((prevV) => prevV)
       setValidity((prevV) => ({...prevV, email: false}))
     } else if (!validity.phoneNumber) {
-      SetValidityPass((prevV) => prevV)
       setValidity((prevV) => ({...prevV, phoneNumber: false}))
     } else undefined
       
     
   }
+
 
   useEffect(() => {
     console.log(formInfo);
@@ -252,9 +249,11 @@ function App() {
 
 
   return (
-    <div className="App bg-blue-50 h-full relative pt-8 md:justify-center md:flex">
-      <div className="absolute bg-steps-background-mobile bg-no-repeat bg-cover h-[172px] w-full top-0 md:bg-steps-background-desktop md:h-[568px] md:w-[274px]"></div>
-      <div className="steps-container flex flex-row gap-4 relative justify-center pb-[34px]">
+    <div className="App bg-blue-50 h-full relative pt-8 md:w-full md:justify-center md:flex md:pt-0 md:self-center md:items-center">
+      <div className="md:border md:flex md:flex-row md:bg-white md:rounded-xl md:p-4 md:w-[940px]">
+      <div className="absolute bg-steps-background-mobile bg-no-repeat bg-cover h-[172px] w-full top-0 md:bg-none md:h-auto"></div>
+      <div className="md:flex md:w-full">
+      <div className="steps-container flex flex-row gap-4 relative justify-center pb-[34px] md:flex-col md:bg-steps-background-desktop md:bg-no-repeat md:h-[568px] md:w-[385px] md:justify-start md:pl-6 md:pt-10 md:pr-32">
         {steps.map((step) => (
           <Step
             index={step.index}
@@ -263,7 +262,7 @@ function App() {
           />
         ))}
       </div>
-
+      <div className="card relative bg-white mx-4 rounded-lg md:mx-0 md:h-auto md:flex-col">
       {activeStep === 1 && (
         <PersonalInfo
           handleNameChange={handleNameChange}
@@ -307,16 +306,20 @@ function App() {
         />
       )}
       {activeStep === 4 && isFinished && <EndPage />}
-
+      </div>
+      <div>
       {isFinished ? undefined : (
         <Footer
           index={activeStep}
           nextStep={nextStep}
           goBack={goBack}
           confirmButton={confirmButton}
-          validityCheck={validityCheck}
+          validityPass={validityPass}
         />
       )}
+      </div>
+      </div>
+      </div>
     </div>
   );
 }

@@ -12,7 +12,7 @@ export type SelectYourPlanProps = {
 
 export const SelectYourPlan = (props: SelectYourPlanProps) => {
   return (
-    <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
+    <div>
       <div className="title px-6 pt-8">
         <h1 className="text-2xl font-bold text-[#022959] pb-2">
           Select your plan

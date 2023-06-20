@@ -18,7 +18,7 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
 
   return (
     <div>
-      <div className="card bg-white relative mx-4 rounded-lg drop-shadow-lg">
+      <div className="md:shadow-none shadow md:h-full md:w-[599px]">
         <div className="title px-6 pt-8">
           <h1 className="text-2xl font-bold text-[#022959] pb-2">
             Personal Info
