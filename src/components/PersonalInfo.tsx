@@ -7,6 +7,7 @@ export type PersonalInfoProps = {
   handleEmailValidity: (event: React.FormEvent<HTMLInputElement>) => void;
   handlePhoneNumberChange: (event: React.FormEvent<HTMLInputElement>) => void;
   handlePhoneNumberValidity: (event: React.FormEvent<HTMLInputElement>) => void;
+  
   name: string;
   email: string;
   phoneNumber: string;
@@ -18,7 +19,7 @@ export const PersonalInfo = (props: PersonalInfoProps) => {
 
   return (
     <div>
-      <div className="md:shadow-none shadow md:h-full md:w-[599px]">
+      <div className="md:shadow-none shadow md:h-auto md:w-[599px]">
         <div className="title px-6 pt-8">
           <h1 className="text-2xl font-bold text-[#022959] pb-2">
             Personal Info

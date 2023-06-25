@@ -197,12 +197,16 @@ function App() {
     event.preventDefault();
     const nameInput = event.target as HTMLInputElement;
     // console.log(nameInput.validity);
-    setFormInfo((prevV) => ({ ...prevV, name: (nameInput as any).value }));
+    setFormInfo((prevV) => ({ ...prevV, name: (nameInput as any).value }))
   }
 
   function handleNameValidity(event: React.FormEvent<HTMLInputElement>) {
     const nameInput = event.target as HTMLInputElement;
+    if (nameInput.value === "") {
+      setValidity((prevV) => ({...prevV, name: false}))
+    } else {
     setValidity((prevV) => ({...prevV, name: nameInput.validity.valid}))
+  }
   }
 
   function handleEmailChange(event: React.FormEvent<HTMLInputElement>) {
@@ -230,15 +234,18 @@ function App() {
 
   function validityCheck() {
     if (validity.name && validity.email && validity.phoneNumber) {
-      SetValidityPass(true);
-    } else if (!validity.name) {
-      setValidity((prevV) => ({...prevV, name: false}))
-    } else if (!validity.email) {
-      setValidity((prevV) => ({...prevV, email: false}))
-    } else if (!validity.phoneNumber) {
-      setValidity((prevV) => ({...prevV, phoneNumber: false}))
-    } else undefined
-      
+      nextStep();
+    } else undefined;
+    // } else if (!validity.name) {
+    //   setValidity((prevV) => ({...prevV, name: false}))
+    //   SetValidityPass(false)
+    // } else if (!validity.email) {
+    //   setValidity((prevV) => ({...prevV, email: false}))
+    //   SetValidityPass(false)
+    // } else if (!validity.phoneNumber) {
+    //   setValidity((prevV) => ({...prevV, phoneNumber: false}))
+    //   SetValidityPass(false)
+    // } else SetValidityPass(false)
     
   }
 
@@ -262,7 +269,7 @@ function App() {
           />
         ))}
       </div>
-      <div className="card relative bg-white mx-4 rounded-lg md:mx-0 md:h-auto md:flex-col">
+      <div className="card relative bg-white mx-4 rounded-lg md:mx-0 md:h-auto md:flex md:flex-col">
       {activeStep === 1 && (
         <PersonalInfo
           handleNameChange={handleNameChange}
@@ -315,6 +322,7 @@ function App() {
           goBack={goBack}
           confirmButton={confirmButton}
           validityPass={validityPass}
+          validityCheck={validityCheck}
         />
       )}
       </div>
