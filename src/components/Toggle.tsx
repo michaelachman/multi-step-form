@@ -5,7 +5,7 @@ export type ToggleProps = {
 
 export const Toggle = (props: ToggleProps) => {
   return (
-    <div className="mt-6 p-3 text-center bg-gray-100 rounded-lg">
+    <div className="p-3 text-center bg-gray-100 rounded-lg">
       <p
         className={`${
           props.isMonthly ? "text-[#022959]" : "text-gray-400"

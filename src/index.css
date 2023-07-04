@@ -5,7 +5,7 @@
 @layer components {
 
 .invalid {
-    @apply border border-red-500;
+    @apply border-red-500;
 }
 
 }

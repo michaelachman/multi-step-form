@@ -23,10 +23,10 @@ export const TabToSelect = (props: TabToSelectProps) => {
       onClick={props.selectOption}
       className={`${
         props.isSelected ? "border-[#483EFF] bg-[#F8F9FF]" : "bg-transparent"
-      } flex border py-4 pl-4 mt-2 rounded-lg`}
+      } flex border py-4 pl-4 mt-2 rounded-lg md:flex-col md:w-1/3 md:gap-7`}
     >
-      <img src={props.option.image}></img>
-      <div className="ml-3">
+      <img className="md:w-[40px] md:h-[40px]" src={props.option.image}></img>
+      <div className="ml-3 md:ml-0">
         <p className="text-[#022959] font-bold text-base">
           {props.option.title}
         </p>

@@ -17,13 +17,13 @@ export const FinishingUp = (props: FinishingUpProps) => {
 
   return (
     <div>
-      <div className="title px-6 pt-8">
+      <div className="title px-6 pt-8 md:px-0">
         <h1 className="text-2xl font-bold text-[#022959] pb-2">Finishing up</h1>
         <p className="font-normal text-[#9699AA] mb-6">
           Double-check everything looks OK before confirming.
         </p>
       </div>
-      <div className="mx-6 pb-3 pt-4 px-4 bg-gray-100 rounded-lg">
+      <div className="mx-6 pb-3 pt-4 px-4 bg-gray-100 rounded-lg md:mx-0">
         <div className="mb-0 flex justify-between">
           <div className="">
             <p className="font-bold text-[#022959]">
@@ -58,7 +58,7 @@ export const FinishingUp = (props: FinishingUpProps) => {
                 </p>
               </div>
               <div>
-                <p className="font-bold text-[#022959] text-sm pr-4">
+                <p className="text-[#022959] text-sm pr-4 font-medium">
                   {props.isMonthly
                     ? `+$${props.addonsParams[key - 1].monthlyCost}/mo`
                     : `+$${props.addonsParams[key - 1].yearlyCost}/yr`}
@@ -68,12 +68,12 @@ export const FinishingUp = (props: FinishingUpProps) => {
           ))}
         </div>
       </div>
-      <div className="mt-5 pb-8 mx-6 px-4 flex justify-between">
+      <div className="mt-5 pb-8 mx-6 px-4 flex justify-between md:mx-0">
         <p className="text-gray-400">
           Total {props.isMonthly ? "(per month)" : "(per year)"}
         </p>
 
-        <p className="text-right font-bold text-[#022959]">
+        <p className="text-right font-bold text-[#483EFF] text-xl">
           {props.isMonthly
             ? `+$${props.totalPrice}/mo`
             : `+$${props.totalPrice}/yr`}

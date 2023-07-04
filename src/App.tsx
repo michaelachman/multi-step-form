@@ -18,12 +18,11 @@ type Info = {
   total: number;
 };
 
-type Validity = {
-  begin: boolean | null,
+export type Validity = {
   name: boolean;
   email: boolean;
   phoneNumber: boolean;
-}
+};
 
 function App() {
   const emptyInfo: Info = {
@@ -37,11 +36,10 @@ function App() {
   };
 
   const beginValidity: Validity = {
-    begin: true,
     name: false,
     email: false,
-    phoneNumber: false
-  }
+    phoneNumber: false,
+  };
 
   const [activeStep, setActiveStep] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
@@ -49,8 +47,8 @@ function App() {
   // const [planIndex, setPlanIndex] = useState(0);
   // const [selectedAddonsIndex, setSelectedAddonsIndex] = useState<number[]>([]);
   const [formInfo, setFormInfo] = useState<Info>(emptyInfo);
-  const [validity, setValidity] = useState<Validity>(beginValidity)
-  const [validityPass, SetValidityPass] = useState(false)
+  const [validity, setValidity] = useState<Validity>(beginValidity);
+  const [validityPass, setValidityPass] = useState(false);
 
   const steps = [
     {
@@ -139,6 +137,14 @@ function App() {
     });
   }, [formInfo.monthlyPlanTime, formInfo.planKey, formInfo.addons]);
 
+  useEffect(() => {
+    if (validity.name && validity.email && validity.phoneNumber) {
+      setValidityPass(true);
+    } else {
+      setValidityPass(false);
+    }
+  }, [validity.name, validity.email, validity.phoneNumber]);
+
   function nextStep() {
     setActiveStep((prevValue) => {
       return prevValue + 1;
@@ -175,7 +181,6 @@ function App() {
     setActiveStep(2);
   }
 
-
   function toggleAddons(key: number) {
     setFormInfo((prevV) => ({
       ...prevV,
@@ -196,17 +201,14 @@ function App() {
   function handleNameChange(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
     const nameInput = event.target as HTMLInputElement;
+
     // console.log(nameInput.validity);
-    setFormInfo((prevV) => ({ ...prevV, name: (nameInput as any).value }))
+    setFormInfo((prevV) => ({ ...prevV, name: (nameInput as any).value }));
   }
 
   function handleNameValidity(event: React.FormEvent<HTMLInputElement>) {
     const nameInput = event.target as HTMLInputElement;
-    if (nameInput.value === "") {
-      setValidity((prevV) => ({...prevV, name: false}))
-    } else {
-    setValidity((prevV) => ({...prevV, name: nameInput.validity.valid}))
-  }
+    setValidity((prevV) => ({ ...prevV, name: nameInput.validity.valid }));
   }
 
   function handleEmailChange(event: React.FormEvent<HTMLInputElement>) {
@@ -216,7 +218,7 @@ function App() {
 
   function handleEmailValidity(event: React.FormEvent<HTMLInputElement>) {
     const emailInput = event.target as HTMLInputElement;
-    setValidity((prevV) => ({...prevV, email: emailInput.validity.valid}))
+    setValidity((prevV) => ({ ...prevV, email: emailInput.validity.valid }));
   }
 
   function handlePhoneNumberChange(event: React.FormEvent<HTMLInputElement>) {
@@ -229,123 +231,101 @@ function App() {
 
   function handlePhoneNumberValidity(event: React.FormEvent<HTMLInputElement>) {
     const phoneNumberInput = event.target as HTMLInputElement;
-    setValidity((prevV) => ({...prevV, phoneNumber: phoneNumberInput.validity.valid}))
+    setValidity((prevV) => ({
+      ...prevV,
+      phoneNumber: phoneNumberInput.validity.valid,
+    }));
   }
 
-  function validityCheck() {
-    if (validity.name && validity.email && validity.phoneNumber) {
-      nextStep();
-    } else undefined;
-    // } else if (!validity.name) {
-    //   setValidity((prevV) => ({...prevV, name: false}))
-    //   SetValidityPass(false)
-    // } else if (!validity.email) {
-    //   setValidity((prevV) => ({...prevV, email: false}))
-    //   SetValidityPass(false)
-    // } else if (!validity.phoneNumber) {
-    //   setValidity((prevV) => ({...prevV, phoneNumber: false}))
-    //   SetValidityPass(false)
-    // } else SetValidityPass(false)
-    
-  }
+  // function validityCheck() {
+  //   setValidity((prevV) => ({...prevV, begin: false}))
+  //   if (validity.name && validity.email && validity.phoneNumber) {
+  //     nextStep();
+  //   } else undefined;
 
+  // }
 
   useEffect(() => {
     console.log(formInfo);
   }, [formInfo]);
 
-
   return (
     <div className="App bg-blue-50 h-full relative pt-8 md:w-full md:justify-center md:flex md:pt-0 md:self-center md:items-center">
       <div className="md:border md:flex md:flex-row md:bg-white md:rounded-xl md:p-4 md:w-[940px]">
-      <div className="absolute bg-steps-background-mobile bg-no-repeat bg-cover h-[172px] w-full top-0 md:bg-none md:h-auto"></div>
-      <div className="md:flex md:w-full">
-      <div className="steps-container flex flex-row gap-4 relative justify-center pb-[34px] md:flex-col md:bg-steps-background-desktop md:bg-no-repeat md:h-[568px] md:w-[385px] md:justify-start md:pl-6 md:pt-10 md:pr-32">
-        {steps.map((step) => (
-          <Step
-            index={step.index}
-            title={step.title}
-            active={step.index === activeStep}
-          />
-        ))}
-      </div>
-      <div className="card relative bg-white mx-4 rounded-lg md:mx-0 md:h-auto md:flex md:flex-col">
-      {activeStep === 1 && (
-        <PersonalInfo
-          handleNameChange={handleNameChange}
-          handleNameValidity={handleNameValidity}
-          handleEmailChange={handleEmailChange}
-          handleEmailValidity={handleEmailValidity}
-          handlePhoneNumberChange={handlePhoneNumberChange}
-          handlePhoneNumberValidity={handlePhoneNumberValidity}
-          name={formInfo.name}
-          email={formInfo.email}
-          phoneNumber={formInfo.phoneNumber}
-        />
-      )}
-      {activeStep === 2 && (
-        <SelectYourPlan
-          planParams={planParams}
-          isMonthly={formInfo.monthlyPlanTime}
-          changePlanTime={changePlanTime}
-          selectOption={(index) => selectOption(index)}
-          planKey={formInfo.planKey}
-        />
-      )}
-      {activeStep === 3 && (
-        <PickAddons
-          addonsParams={addonsParams}
-          isMonthly={formInfo.monthlyPlanTime}
-          toggleAddons={toggleAddons}
-          selectedAddonsKeys={formInfo.addons}
-          isSelected={(key) => isSelected(key)}
-        />
-      )}
-      {activeStep === 4 && !isFinished && (
-        <FinishingUp
-          isMonthly={formInfo.monthlyPlanTime}
-          planKey={formInfo.planKey}
-          planParams={planParams}
-          addonsParams={addonsParams}
-          changeActiveStep={changeActiveStep}
-          selectedAddonsKeys={formInfo.addons}
-          totalPrice={formInfo.total}
-        />
-      )}
-      {activeStep === 4 && isFinished && <EndPage />}
-      </div>
-      <div>
-      {isFinished ? undefined : (
-        <Footer
-          index={activeStep}
-          nextStep={nextStep}
-          goBack={goBack}
-          confirmButton={confirmButton}
-          validityPass={validityPass}
-          validityCheck={validityCheck}
-        />
-      )}
-      </div>
-      </div>
+        <div className="absolute bg-steps-background-mobile bg-no-repeat bg-cover h-[172px] w-full top-0 md:bg-none md:h-auto"></div>
+        <div className="md:flex md:w-full">
+          <div className="steps-container flex flex-row gap-4 relative justify-center pb-[34px] md:flex-col md:bg-steps-background-desktop md:bg-no-repeat md:h-[568px] md:w-[410px] md:justify-start md:pl-6 md:pt-10">
+            {steps.map((step) => (
+              <Step
+                index={step.index}
+                title={step.title}
+                active={step.index === activeStep}
+              />
+            ))}
+          </div>
+          <div className="md:h-full md:w-full md:pl-24 md:pt-4 md:justify-between md:flex md:flex-col">
+            <div className="card relative bg-white mx-4 rounded-lg shadow-xl md:mx-0 md:pr-20 md:h-auto md:flex md:flex-col md:static md:shadow-none">
+              {activeStep === 1 && (
+                <PersonalInfo
+                  handleNameChange={handleNameChange}
+                  handleNameValidity={handleNameValidity}
+                  handleEmailChange={handleEmailChange}
+                  handleEmailValidity={handleEmailValidity}
+                  handlePhoneNumberChange={handlePhoneNumberChange}
+                  handlePhoneNumberValidity={handlePhoneNumberValidity}
+                  name={formInfo.name}
+                  email={formInfo.email}
+                  phoneNumber={formInfo.phoneNumber}
+                  validity={validity}
+                />
+              )}
+              {activeStep === 2 && (
+                <SelectYourPlan
+                  planParams={planParams}
+                  isMonthly={formInfo.monthlyPlanTime}
+                  changePlanTime={changePlanTime}
+                  selectOption={(index) => selectOption(index)}
+                  planKey={formInfo.planKey}
+                />
+              )}
+              {activeStep === 3 && (
+                <PickAddons
+                  addonsParams={addonsParams}
+                  isMonthly={formInfo.monthlyPlanTime}
+                  toggleAddons={toggleAddons}
+                  selectedAddonsKeys={formInfo.addons}
+                  isSelected={(key) => isSelected(key)}
+                />
+              )}
+              {activeStep === 4 && !isFinished && (
+                <FinishingUp
+                  isMonthly={formInfo.monthlyPlanTime}
+                  planKey={formInfo.planKey}
+                  planParams={planParams}
+                  addonsParams={addonsParams}
+                  changeActiveStep={changeActiveStep}
+                  selectedAddonsKeys={formInfo.addons}
+                  totalPrice={formInfo.total}
+                />
+              )}
+              {activeStep === 4 && isFinished && <EndPage />}
+            </div>
+            <div className="">
+              {isFinished ? undefined : (
+                <Footer
+                  index={activeStep}
+                  nextStep={nextStep}
+                  goBack={goBack}
+                  confirmButton={confirmButton}
+                  validityPass={validityPass}
+                />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 export default App;
-
-// TASKI
-// 2. wjebac do obiektu formInfo plan, czas planu i addony /// done
-// 3. nie pozwolic na zmiane activestepa jezeli nie ma wpisanych danych na 1 stronie (walidacja)
-// 4. przeleciec po komponentach, nazewnictwo funkcji i propsow (changeState, onChange) /// done
-// 5. wyjebac reszte logiki do apptsxa (tabselect, selectedaddonsinput, chyba finishingup) /// done
-// 6. jeden obiekt ktorzy przetrzymuje cale info o stanie formularza // done
-// 7. ugenerycznienie komponentow (toggle) (*tabselect) /// done
-// 8. zmienic nazwe selectedaddonsindex na keye // done
-// 9. wyjebac niepotrzebne stejty na rzecz stanow z forminfo (isMonthly na przyklad - dokonczyc) // done
-// 10. ogarnac wysypujacy sie pickaddons jak wybierzesz wszystkie 3 addonsy (powiazane z tym ze jest index grany dalej w najwyzszym useeffecie) // done
-// 11. planindex tez pozmieniac na keye chyba mimo ze to nie arrayka jak addony // done
-// 12. selectoption tam ma dalej uzycie chyba .plan i cos z tym kminic jeszcze // done
-
-// .... zaczac kminic jak wysylac info do serwera
-// .... potem dekstop

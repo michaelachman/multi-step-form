@@ -12,8 +12,8 @@ export type SelectYourPlanProps = {
 
 export const SelectYourPlan = (props: SelectYourPlanProps) => {
   return (
-    <div>
-      <div className="title px-6 pt-8">
+    <div className="pb-4">
+      <div className="title px-6 pt-8 md:px-0">
         <h1 className="text-2xl font-bold text-[#022959] pb-2">
           Select your plan
         </h1>
@@ -21,8 +21,9 @@ export const SelectYourPlan = (props: SelectYourPlanProps) => {
           You have the option of monthly or yearly billing.
         </p>
       </div>
-      <div className="mx-6 pb-6">
-        <form>
+      <div className="mx-6 pb-6 md:mx-0 md:pb-2">
+        
+        <form className="mb-5 md:flex md:flex-row md:gap-5">
           <TabSelect
             planParams={props.planParams}
             name="Params"
@@ -31,11 +32,13 @@ export const SelectYourPlan = (props: SelectYourPlanProps) => {
             planKey={props.planKey}
           />
         </form>
+        
         <Toggle
           isMonthly={props.isMonthly}
           toggleChange={props.changePlanTime}
         />
+        </div>
       </div>
-    </div>
+    
   );
 };

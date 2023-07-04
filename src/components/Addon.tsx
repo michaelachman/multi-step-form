@@ -23,7 +23,7 @@ export const Addon = (props: AddonsProps) => {
         props.isSelected
           ? `border-[#483EFF] bg-[#F8F9FF]`
           : `border-gray-300 bg-white`
-      } flex border py-3 pl-4 mt-2 rounded-lg text-sm`}
+      } flex border py-3 pl-4 mt-2 rounded-lg text-sm md:h-20 md:items-center`}
       onClick={props.toggleAddons}
     >
       <div className="flex flex-row w-full">
