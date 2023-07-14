@@ -10,9 +10,10 @@ export const Step = (props: StepProps) => {
     : "bg-transparent text-white";
 
   return (
-    <div className="flex md:py-1">
+    <div className="flex md:py-1" role="stepDiv">
       <div
         className={`step border border-slate-200 rounded-full w-[33px] h-[33px] flex items-center justify-center ${stepClass} md:self-center`}
+        role="indexDiv"
       >
         {props.index}
       </div>
@@ -24,3 +25,5 @@ export const Step = (props: StepProps) => {
     </div>
   );
 };
+
+export default Step;

@@ -17,7 +17,7 @@ export const TabSelect = (props: TabSelectProps) => {
         <TabToSelect
           option={param}
           selectOption={() => props.selectOption(param.key)}
-          isSelected={props.planKey === index+1}  // tytautawufoijawiofjawiofawiogfjioajigof
+          isSelected={props.planKey === index+1}
           isMonthly={props.isMonthly}
         />
       ))}
