@@ -114,9 +114,8 @@ function App() {
     },
   ];
 
-  useEffect(() => {
-    setFormInfo((prevV) => {
-      let totalPrice = formInfo.monthlyPlanTime
+  function calculateTotalPrice() {
+    let totalPrice = formInfo.monthlyPlanTime
         ? planParams[formInfo.planKey - 1].monthlyCost
         : planParams[formInfo.planKey - 1].yearlyCost;
 
@@ -127,6 +126,12 @@ function App() {
         : formInfo.addons.forEach((index) => {
             totalPrice = totalPrice + addonsParams[index - 1].yearlyCost;
           });
+          return totalPrice
+  }
+
+  useEffect(() => {
+    setFormInfo((prevV) => {
+      const totalPrice = calculateTotalPrice();
       return { ...prevV, total: totalPrice };
     });
   }, [formInfo.monthlyPlanTime, formInfo.planKey, formInfo.addons]);
@@ -171,11 +176,11 @@ function App() {
   }
 
   function toggleAddons(key: number) {
-    setFormInfo((prevV) => ({
-      ...prevV,
-      addons: prevV.addons.includes(key)
-        ? prevV.addons.filter((prevVel) => prevVel !== key)
-        : [...prevV.addons, key],
+    setFormInfo((prevFormValue) => ({
+      ...prevFormValue,
+      addons: prevFormValue.addons.includes(key)
+        ? prevFormValue.addons.filter((prevAddonKey) => prevAddonKey !== key)
+        : [...prevFormValue.addons, key],
     }));
   }
 
@@ -187,7 +192,6 @@ function App() {
     event.preventDefault();
     const nameInput = event.target as HTMLInputElement;
 
-    // console.log(nameInput.validity);
     setFormInfo((prevV) => ({ ...prevV, name: (nameInput as any).value }));
   }
 
@@ -288,7 +292,7 @@ function App() {
               {activeStep === 4 && isFinished && <EndPage />}
             </div>
             <div className="">
-              {isFinished ? undefined : (
+              {!isFinished && (
                 <Footer
                   index={activeStep}
                   nextStep={nextStep}
