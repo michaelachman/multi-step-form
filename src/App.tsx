@@ -35,7 +35,7 @@ function App() {
     total: 0,
   };
 
-  const beginValidity: Validity = {
+  const defaultValidity: Validity = {
     name: false,
     email: false,
     phoneNumber: false,
@@ -43,12 +43,9 @@ function App() {
 
   const [activeStep, setActiveStep] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
-  // const [isMonthly, setYearly] = useState(true);
-  // const [planIndex, setPlanIndex] = useState(0);
-  // const [selectedAddonsIndex, setSelectedAddonsIndex] = useState<number[]>([]);
   const [formInfo, setFormInfo] = useState<Info>(emptyInfo);
-  const [validity, setValidity] = useState<Validity>(beginValidity);
-  const [validityPass, setValidityPass] = useState(false);
+  const [validity, setValidity] = useState<Validity>(defaultValidity);
+  const [isValid, setIsValid] = useState(false);
 
   const steps = [
     {
@@ -76,7 +73,6 @@ function App() {
       title: "Arcade",
       monthlyCost: 9,
       yearlyCost: 90,
-      yearlyText: "2 months free",
     },
     {
       key: 2,
@@ -84,7 +80,6 @@ function App() {
       title: "Advanced",
       monthlyCost: 12,
       yearlyCost: 120,
-      yearlyText: "2 months free",
     },
     {
       key: 3,
@@ -92,7 +87,6 @@ function App() {
       title: "Pro",
       monthlyCost: 15,
       yearlyCost: 150,
-      yearlyText: "2 months free",
     },
   ];
 
@@ -139,9 +133,9 @@ function App() {
 
   useEffect(() => {
     if (validity.name && validity.email && validity.phoneNumber) {
-      setValidityPass(true);
+      setIsValid(true);
     } else {
-      setValidityPass(false);
+      setIsValid(false);
     }
   }, [validity.name, validity.email, validity.phoneNumber]);
 
@@ -158,14 +152,10 @@ function App() {
   }
 
   function confirmButton() {
-    setIsFinished((prevValue) => {
-      prevValue = true;
-      return prevValue;
-    });
+    setIsFinished(true);
   }
 
   function changePlanTime() {
-    // setYearly((prevV) => !prevV);
     setFormInfo((prevV) => ({
       ...prevV,
       monthlyPlanTime: !formInfo.monthlyPlanTime,
@@ -173,7 +163,6 @@ function App() {
   }
 
   function selectOption(key: number) {
-    // setPlanIndex(index);
     setFormInfo((prevV) => ({ ...prevV, planKey: key }));
   }
 
@@ -191,11 +180,7 @@ function App() {
   }
 
   function isSelected(key: number) {
-    if (formInfo.addons.includes(key)) {
-      return true;
-    } else {
-      return false;
-    }
+    return formInfo.addons.includes(key)
   }
 
   function handleNameChange(event: React.FormEvent<HTMLInputElement>) {
@@ -236,14 +221,6 @@ function App() {
       phoneNumber: phoneNumberInput.validity.valid,
     }));
   }
-
-  // function validityCheck() {
-  //   setValidity((prevV) => ({...prevV, begin: false}))
-  //   if (validity.name && validity.email && validity.phoneNumber) {
-  //     nextStep();
-  //   } else undefined;
-
-  // }
 
   useEffect(() => {
     console.log(formInfo);
@@ -317,7 +294,7 @@ function App() {
                   nextStep={nextStep}
                   goBack={goBack}
                   confirmButton={confirmButton}
-                  validityPass={validityPass}
+                  isValid={isValid}
                 />
               )}
             </div>

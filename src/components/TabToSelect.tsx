@@ -4,7 +4,6 @@ export type PlanParams = {
   title: string;
   monthlyCost: number;
   yearlyCost: number;
-  yearlyText: string;
 };
 
 export type TabToSelectProps = {
@@ -17,6 +16,7 @@ export type TabToSelectProps = {
 export const TabToSelect = (props: TabToSelectProps) => {
   const monthly = `$${props.option.monthlyCost}/mo`;
   const yearly = `$${props.option.yearlyCost}/yr`;
+  const yearlyText = "2 months free"
 
   return (
     <div
@@ -35,7 +35,7 @@ export const TabToSelect = (props: TabToSelectProps) => {
           {props.isMonthly === true ? monthly : yearly}
         </p>
         <p role="thirdParagraph" className="text-[#022959] text-sm">
-          {props.isMonthly === false && props.option.yearlyText}
+          {props.isMonthly === false && yearlyText}
         </p>
       </div>
     </div>

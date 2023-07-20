@@ -3,7 +3,7 @@ export type FooterProps = {
   nextStep: () => void;
   goBack: () => void;
   confirmButton: () => void;
-  validityPass: boolean;
+  isValid: boolean;
 };
 
 export const Footer = (props: FooterProps) => {
@@ -21,7 +21,7 @@ export const Footer = (props: FooterProps) => {
         )}
         {props.index === 1 && (
           <button
-          disabled={!props.validityPass}
+          disabled={!props.isValid}
           onClick={() => props.nextStep()}
             className="ml-auto mr-4 justify-self-end w-24 h-10 my-4 bg-[#022959] text-white rounded-md"
           >
